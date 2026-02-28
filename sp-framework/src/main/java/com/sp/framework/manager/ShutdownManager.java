@@ -1,11 +1,7 @@
 package com.sp.framework.manager;
 
-import com.sp.framework.shiro.web.session.SpringSessionValidationScheduler;
-import net.sf.ehcache.CacheManager;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 
@@ -18,38 +14,16 @@ public class ShutdownManager
 {
     private static final Logger logger = LoggerFactory.getLogger("sys-user");
 
-    @Autowired(required = false)
-    private SpringSessionValidationScheduler springSessionValidationScheduler;
-
-    @Autowired(required = false)
-    private EhCacheManager ehCacheManager;
+    // 清理資源
 
     @PreDestroy
     public void destroy()
     {
-        shutdownSpringSessionValidationScheduler();
         shutdownAsyncManager();
-        shutdownEhCacheManager();
+        // Spring Security handles session validation automatically
     }
 
-    /**
-     * 停止Seesion会话检查
-     */
-    private void shutdownSpringSessionValidationScheduler()
-    {
-        if (springSessionValidationScheduler != null && springSessionValidationScheduler.isEnabled())
-        {
-            try
-            {
-                logger.info("====关闭会话验证任务====");
-                springSessionValidationScheduler.disableSessionValidation();
-            }
-            catch (Exception e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-        }
-    }
+
 
     /**
      * 停止异步执行任务
@@ -67,20 +41,5 @@ public class ShutdownManager
         }
     }
 
-    private void shutdownEhCacheManager()
-    {
-        try
-        {
-            logger.info("====关闭缓存====");
-            if (ehCacheManager != null)
-            {
-                CacheManager cacheManager = ehCacheManager.getCacheManager();
-                cacheManager.shutdown();
-            }
-        }
-        catch (Exception e)
-        {
-            logger.error(e.getMessage(), e);
-        }
-    }
+
 }

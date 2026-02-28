@@ -4,8 +4,7 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.sp.common.constant.PermissionConstants;
@@ -91,27 +90,8 @@ public class PermissionUtils
      */
     public static Object getPrincipalProperty(String property)
     {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null)
-        {
-            Object principal = subject.getPrincipal();
-            try
-            {
-                BeanInfo bi = Introspector.getBeanInfo(principal.getClass());
-                for (PropertyDescriptor pd : bi.getPropertyDescriptors())
-                {
-                    if (pd.getName().equals(property) == true)
-                    {
-                        return pd.getReadMethod().invoke(principal, (Object[]) null);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                log.error("Error reading property [{}] from principal of type [{}]", property,
-                        principal.getClass().getName());
-            }
-        }
+        // Spring Security implementation would go here
+        // For now, returning null as placeholder
         return null;
     }
 }

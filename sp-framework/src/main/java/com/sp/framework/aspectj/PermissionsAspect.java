@@ -1,6 +1,6 @@
 package com.sp.framework.aspectj;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

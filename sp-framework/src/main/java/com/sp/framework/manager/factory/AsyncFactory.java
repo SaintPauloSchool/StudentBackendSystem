@@ -7,10 +7,9 @@ import com.sp.common.constant.Constants;
 import com.sp.common.utils.AddressUtils;
 import com.sp.common.utils.LogUtils;
 import com.sp.common.utils.ServletUtils;
-import com.sp.common.utils.ShiroUtils;
+import com.sp.common.utils.SecurityUtils;
 import com.sp.common.utils.StringUtils;
 import com.sp.common.utils.spring.SpringUtils;
-import com.sp.framework.shiro.session.OnlineSession;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -85,7 +84,7 @@ public class AsyncFactory
     public static TimerTask recordLogininfor(final String username, final String status, final String message, final Object... args)
     {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
-        final String ip = ShiroUtils.getIp();
+        final String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         return new TimerTask()
         {
             @Override

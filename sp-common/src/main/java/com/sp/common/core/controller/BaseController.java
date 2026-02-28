@@ -21,7 +21,7 @@ import com.sp.common.core.page.TableSupport;
 import com.sp.common.utils.DateUtils;
 import com.sp.common.utils.PageUtils;
 import com.sp.common.utils.ServletUtils;
-import com.sp.common.utils.ShiroUtils;
+import com.sp.common.utils.SecurityUtils;
 import com.sp.common.utils.StringUtils;
 import com.sp.common.utils.sql.SqlUtil;
 
@@ -199,7 +199,7 @@ public class BaseController
      */
     public SysUser getSysUser()
     {
-        return ShiroUtils.getSysUser();
+        return SecurityUtils.getSysUser();
     }
 
     /**
@@ -207,7 +207,7 @@ public class BaseController
      */
     public void setSysUser(SysUser user)
     {
-        ShiroUtils.setSysUser(user);
+        SecurityUtils.setSysUser(user);
     }
 
     /**

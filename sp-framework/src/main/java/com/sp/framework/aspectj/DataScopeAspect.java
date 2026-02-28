@@ -13,7 +13,7 @@ import com.sp.common.core.domain.BaseEntity;
 import com.sp.common.core.domain.entity.SysRole;
 import com.sp.common.core.domain.entity.SysUser;
 import com.sp.common.core.text.Convert;
-import com.sp.common.utils.ShiroUtils;
+import com.sp.common.utils.SecurityUtils;
 import com.sp.common.utils.StringUtils;
 
 /**
@@ -64,7 +64,7 @@ public class DataScopeAspect
     protected void handleDataScope(final JoinPoint joinPoint, DataScope controllerDataScope)
     {
         // 获取当前的用户
-        SysUser currentUser = ShiroUtils.getSysUser();
+        SysUser currentUser = SecurityUtils.getSysUser();
         if (currentUser != null)
         {
             // 如果是超级管理员，则不过滤数据

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.sp.common.annotation.Sensitive;
 import com.sp.common.core.domain.entity.SysUser;
 import com.sp.common.enums.DesensitizedType;
-import com.sp.common.utils.ShiroUtils;
+import com.sp.common.utils.SecurityUtils;
 
 /**
  * 数据脱敏序列化过滤
@@ -52,7 +52,7 @@ public class SensitiveJsonSerializer extends JsonSerializer<String> implements C
      */
     private boolean desensitization()
     {
-        SysUser securityUser = ShiroUtils.getSysUser();
+        SysUser securityUser = SecurityUtils.getSysUser();
         if (securityUser == null)
         {
             return true;

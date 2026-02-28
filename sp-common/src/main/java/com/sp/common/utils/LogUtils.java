@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.shiro.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.sp.common.json.JSON;
@@ -119,7 +119,7 @@ public class LogUtils
 
     protected static String getUsername()
     {
-        return (String) SecurityUtils.getSubject().getPrincipal();
+        return SecurityUtils.getUsername();
     }
 
     public static Logger getAccessLog()

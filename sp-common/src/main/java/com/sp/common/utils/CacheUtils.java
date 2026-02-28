@@ -2,9 +2,8 @@ package com.sp.common.utils;
 
 import java.util.Iterator;
 import java.util.Set;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.sp.common.utils.spring.SpringUtils;
@@ -17,7 +16,7 @@ public class CacheUtils
 {
     private static Logger logger = LoggerFactory.getLogger(CacheUtils.class);
 
-    private static CacheManager cacheManager = SpringUtils.getBean(CacheManager.class);
+    private static CacheManager springCacheManager = SpringUtils.getBean(CacheManager.class);
 
     private static final String SYS_CACHE = "sys-cache";
 
@@ -113,7 +112,7 @@ public class CacheUtils
      */
     public static void remove(String cacheName, String key)
     {
-        getCache(cacheName).remove(getKey(key));
+        getCache(cacheName).evict(getKey(key));
     }
 
     /**
@@ -123,13 +122,9 @@ public class CacheUtils
      */
     public static void removeAll(String cacheName)
     {
-        Cache<String, Object> cache = getCache(cacheName);
-        Set<String> keys = cache.keys();
-        for (Iterator<String> it = keys.iterator(); it.hasNext();)
-        {
-            cache.remove(it.next());
-        }
-        logger.info("清理缓存： {} => {}", cacheName, keys);
+        Cache cache = getCache(cacheName);
+        cache.clear();
+        logger.info("清理缓存： {}", cacheName);
     }
 
     /**
@@ -174,9 +169,9 @@ public class CacheUtils
      * @param cacheName
      * @return
      */
-    public static Cache<String, Object> getCache(String cacheName)
+    public static Cache getCache(String cacheName)
     {
-        Cache<String, Object> cache = cacheManager.getCache(cacheName);
+        Cache cache = springCacheManager.getCache(cacheName);
         if (cache == null)
         {
             throw new RuntimeException("当前系统中没有定义“" + cacheName + "”这个缓存。");
@@ -191,6 +186,7 @@ public class CacheUtils
      */
     public static String[] getCacheNames()
     {
-        return ((EhCacheManager) cacheManager).getCacheManager().getCacheNames();
+        // Spring Cache Manager doesn't provide direct access to cache names
+        return new String[0];
     }
 }
